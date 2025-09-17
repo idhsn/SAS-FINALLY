@@ -16,6 +16,8 @@ int menu(){
     int choice = 0, i;
     int key;
 
+    loading();
+
     while (1){
         for (i = 0; i < 8; i++){
             gotoxy(8, 8 + i);

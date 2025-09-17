@@ -6,6 +6,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <conio.h>
+#include <windows.h>
 
 #define MAX_LEN 20
 #define MAX_TEXT 2000
@@ -23,12 +24,44 @@ void globalStats(void);
 void draw3(void);
 void draw_frame(void);
 void showAnalyses(void);
+void sleep_ms(int ms);
+void loading(void);
 int cmpAlpha(const void *a, const void *b);
 int cmpLength(const void *a, const void *b);
 int cmpFreq(const void *a, const void *b);
 int compareChars(const void *a, const void *b);
 int menu(void);
 
+//sleep in ms
+
+void sleep_ms(int ms) {
+    Sleep(ms); }
+
+//loading stuff
+void loading() {
+    int i;
+    clrscr();
+    draw_frame();
+    gotoxy(23, 10);
+    textcolor(7);cprintf("Loading, please wait...");
+    textcolor(7);
+    // draw base empty bar
+    for (i = 25; i <= 45; i++) {
+        gotoxy(i, 12);
+        printf("%c", 176); // light shade
+    }
+    // fill it with blocks while showing percent
+    for (i = 25; i <= 45; i++) {
+        gotoxy(21, 12);
+        textcolor(2);
+        cprintf("[%d%%]", (i - 25) * 5);
+        gotoxy(i, 12);
+        printf("%c", 219); // full block
+        sleep_ms(80);
+    }
+    textcolor(7);
+    sleep_ms(800);
+}
 
 // draw the frame
 void draw_frame() {
@@ -234,7 +267,7 @@ void showAnalyses() {
     int i, j, y, k;
     char a[MAX_LEN], b[MAX_LEN];
 
-    // === Word Cloud ===
+    // Word Cloud
     y = 4;
     for (i = 0; i < wordcount; i++) {
         gotoxy(4, y);
@@ -248,7 +281,7 @@ void showAnalyses() {
         }
     }
 
-    // === Palindromes ===
+    // Palindromes
     y = 4;
     for (i = 0; i < wordcount; i++) {
         int len = dict[i].length;
@@ -266,7 +299,7 @@ void showAnalyses() {
         }
     }
 
-    // === Anagrams ===
+    // Anagrams
     y = 4;
     for (i = 0; i < wordcount; i++) {
         for (j = i + 1; j < wordcount; j++) {
